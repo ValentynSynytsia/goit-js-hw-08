@@ -66,9 +66,11 @@ const images = [
 
 const container = document.querySelector(".gallery");
 container.innerHTML = createImagesMarkup(images);
+container.addEventListener("click", handleGalleryClick);
+
 function createImagesMarkup(images) {
   return images.map(({ preview, original, description }) =>
-  `<li class="gallery-item">
+    `<li class="gallery-item">
       <a class="gallery-link" href="${original}">
         <img
           class="gallery-image"
@@ -78,15 +80,19 @@ function createImagesMarkup(images) {
         />
       </a>
     </li>
-    `).join("")
+    `).join("");
 }
-console.log(createImagesMarkup(images));
-{/* <li class="gallery-item">
-  <a class="gallery-link" href="">
-    <img class="gallery-image" 
-        data-sourse="" 
-        src="" 
-        alt="" 
-    />
-  </a>
-</li> */}
+
+function handleGalleryClick(event) {
+  event.preventDefault();
+  if (event.target === event.currentTarget) {
+    return;
+  }
+  // Чи має сенс мені створювати окремі змінні для event.target.dataset.source та event.target.alt?
+  // Я ж можу використовувати їх як я це роблю нижче, без виносу їх в окремі змінні?
+  const instance = basicLightbox.create(
+    `<img src="${event.target.dataset.source}" alt="${event.target.alt}" width="
+1112">`
+  );
+  instance.show();
+}
